@@ -21,6 +21,11 @@ private val Montserrat = FontFamily(
     Font(R.font.montserrat_semibold,FontWeight.SemiBold))
 
 val Typography = Typography(
+    h2 = TextStyle(
+        fontFamily = CircularStd,
+        fontWeight = FontWeight.Bold,
+        fontSize = 48.sp
+    ),
     h4 = TextStyle(
         fontFamily = CircularStd,
         fontWeight = FontWeight.Bold,
