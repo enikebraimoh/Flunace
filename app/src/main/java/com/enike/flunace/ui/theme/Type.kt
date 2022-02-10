@@ -26,6 +26,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 48.sp
     ),
+    h3 = TextStyle(
+        fontFamily = CircularStd,
+        fontWeight = FontWeight.Bold,
+        fontSize = 40.sp
+    ),
     h4 = TextStyle(
         fontFamily = CircularStd,
         fontWeight = FontWeight.Bold,
@@ -63,7 +68,7 @@ val Typography = Typography(
     button = TextStyle(
         fontFamily = CircularStd,
         fontWeight = FontWeight.Medium,
-        fontSize = 14.sp
+        fontSize = 18.sp
     ),
     caption = TextStyle(
         fontFamily = CircularStd,
