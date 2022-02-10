@@ -10,8 +10,3 @@ val Shapes = Shapes(
     medium = RoundedCornerShape(4.dp),
     large = RoundedCornerShape(0.dp)
 )
-
-val myshapes = Shapes(
-    small = RoundedCornerShape(percent = 50),
-    medium = RoundedCornerShape(size = 40.dp)
-)

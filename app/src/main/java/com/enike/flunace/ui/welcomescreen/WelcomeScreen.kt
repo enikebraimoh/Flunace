@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enike.flunace.R
+import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 
 @Composable
@@ -65,33 +66,6 @@ fun Contents() {
         DefaultButton(buttonClicked = {}, buttonText = "Get Started")
 
     }
-}
-
-@Composable
-fun DefaultButton(
-    buttonText: String,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 40.dp),
-    buttonClicked: () -> Unit
-) {
-    Button(
-        modifier = modifier,
-        elevation = ButtonDefaults.elevation(
-            defaultElevation = 0.dp,
-            pressedElevation = 8.dp,
-            disabledElevation = 0.dp
-        ),
-        shape = MaterialTheme.shapes.small.copy(all = CornerSize(20.dp)),
-        onClick = { buttonClicked }
-    ) {
-        Text(
-            text = buttonText,
-            Modifier.padding(15.dp),
-            style = MaterialTheme.typography.button
-        )
-    }
-
 }
 
 
