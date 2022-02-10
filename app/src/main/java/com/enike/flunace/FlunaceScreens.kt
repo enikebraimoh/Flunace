@@ -7,7 +7,8 @@ import com.enike.flunace.ui.welcomescreen.WelcomeScreen
 enum class FlunaceScreens() {
 
     SplashScreen(),
-    WelcomeScreen();
+    WelcomeScreen(),
+    CreateAccountScreen();
 
     companion object {
         fun fromRoute(route: String?): FlunaceScreens =
