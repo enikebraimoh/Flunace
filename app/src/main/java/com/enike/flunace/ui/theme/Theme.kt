@@ -1,6 +1,7 @@
 package com.enike.flunace.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
@@ -17,6 +18,9 @@ private val DarkColorPalette = darkColors(
     error = Orange700
 )
 
+val Colors.myColor: Color
+    get() = if(!isLight) Color(0xFF424242) else Color(0xFFF2F3F2)
+
 private val LightColorPalette = lightColors(
     primary = Orange800,
     primaryVariant = Orange900,
@@ -25,6 +29,7 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.White,
     secondaryVariant = Orange900,
     error = Orange700
+
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,

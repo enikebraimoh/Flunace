@@ -47,9 +47,7 @@ fun App() {
             navController = navController,
             modifier = Modifier.padding(inner_padding)
         )
-
     }
-
 }
 
 @Composable
