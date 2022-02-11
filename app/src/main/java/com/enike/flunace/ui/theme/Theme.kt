@@ -19,7 +19,7 @@ private val DarkColorPalette = darkColors(
 )
 
 val Colors.myColor: Color
-    get() = if(!isLight) Color(0xFF424242) else Color(0xFFF2F3F2)
+    get() = if (!isLight) Color(0xFF424242) else Color(0xFFF2F3F2)
 
 private val LightColorPalette = lightColors(
     primary = Orange800,
