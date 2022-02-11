@@ -1,17 +1,16 @@
 package com.enike.flunace.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enike.flunace.ui.theme.FlunaceTheme
@@ -24,7 +23,7 @@ fun DefaultButton(
         .fillMaxWidth()
         .padding(vertical = 40.dp),
     buttonClicked: () -> Unit,
-    isEnabled : Boolean =  true,
+    isEnabled: Boolean = true,
 ) {
     Button(
         modifier = modifier,
@@ -56,7 +55,8 @@ fun CustomInputField(
     onTextChange: (String) -> Unit,
     shapes: Shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp)),
     leadingIcon: @Composable () -> Unit,
-    hint : String = "8140252210") {
+    hint: String = "8140252210"
+) {
     Surface(color = MaterialTheme.colors.myColor, shape = shapes) {
         TextField(
             modifier = modifier.padding(horizontal = 20.dp, vertical = 5.dp),
@@ -65,9 +65,10 @@ fun CustomInputField(
             textStyle = MaterialTheme.typography.subtitle1,
             placeholder = {
                 Text(
-                text = hint,
-                style = MaterialTheme.typography.subtitle1,
-            )},
+                    text = hint,
+                    style = MaterialTheme.typography.subtitle1,
+                )
+            },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             colors = TextFieldDefaults.textFieldColors(
                 disabledTextColor = Color.Transparent,
