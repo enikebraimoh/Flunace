@@ -29,6 +29,7 @@ fun CreateAccountScreen() {
             .padding(20.dp)
             .fillMaxWidth()
     ) {
+        Spacer(modifier = Modifier.height(60.dp))
         Text(
             text = "Create an Account",
             textAlign = TextAlign.Center,
