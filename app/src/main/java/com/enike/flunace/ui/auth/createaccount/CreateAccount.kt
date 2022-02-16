@@ -1,6 +1,9 @@
 package com.enike.flunace.ui.auth.createaccount
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.text.InputType
+import android.widget.TextView
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -12,13 +15,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.enike.flunace.R
 import com.enike.flunace.ui.components.CustomInputField
 import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
+import com.mukesh.OtpView
 
 @Composable
 fun CreateAccountScreen() {
@@ -55,10 +62,8 @@ fun CreateAccountScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        DefaultButton(buttonText = "Next", isEnabled = text.isNotBlank(), buttonClicked = {
+        DefaultButton(buttonText = "Next", isEnabled = text.isNotBlank(), buttonClicked = {})
 
-        })
-        
     }
 }
 

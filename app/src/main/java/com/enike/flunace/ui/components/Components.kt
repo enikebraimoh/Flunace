@@ -33,6 +33,9 @@ fun DefaultButton(
             pressedElevation = 8.dp,
             disabledElevation = 0.dp
         ),
+        colors = ButtonDefaults.buttonColors(
+            disabledBackgroundColor = Color(0xFFFBE5D9)
+        ),
         shape = MaterialTheme.shapes.small.copy(all = CornerSize(20.dp)),
         onClick = { buttonClicked }
     ) {
