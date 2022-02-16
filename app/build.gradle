@@ -66,4 +66,7 @@ dependencies {
     //Compose navigation dependency
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
 
+    // third party libraries
+    implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
+
 }
