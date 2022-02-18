@@ -167,7 +167,7 @@ fun OTPTextFields(
 
 @Composable
 fun OtpCell(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     value: String,
     isCursorVisible: Boolean = false
 ) {
@@ -191,7 +191,7 @@ fun OtpCell(
     ) {
         Text(
             text = if (isCursorVisible) cursorSymbol else value,
-            style = MaterialTheme.typography.body1,
+            style = MaterialTheme.typography.subtitle1,
             modifier = Modifier.align(Alignment.Center)
         )
     }
@@ -199,7 +199,7 @@ fun OtpCell(
 
 @ExperimentalComposeUiApi
 @Composable
-fun OtpBugView() {
+fun OtpBugView(modifier: Modifier = Modifier) {
     val (editValue, setEditValue) = remember { mutableStateOf("") }
     val otpLength = remember { 4 }
     val focusRequester = remember { FocusRequester() }
@@ -228,7 +228,8 @@ fun OtpBugView() {
         (0 until otpLength).map { index ->
             OtpCell(
                 modifier = Modifier
-                    .size(36.dp)
+                    .padding(20.dp)
+                    .size(50.dp)
                     .clickable {
                         focusRequester.requestFocus()
                         // this is required so if keyboard is dissmissed
