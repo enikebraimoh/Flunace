@@ -125,9 +125,8 @@ fun OTPTextFields(
                     .focusOrder(focusRequester = focusRequesters[index]) {
                         focusRequesters[index + 1].requestFocus()
                     },
-                textStyle = MaterialTheme.typography.subtitle1.copy(
-                    textAlign = TextAlign.Center, color = MaterialTheme.colors.onBackground
-                ),
+                shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp)),
+                textStyle = MaterialTheme.typography.subtitle1,
                 singleLine = true,
                 value = code.getOrNull(index = index)?.takeIf {
                     it.isDigit()
@@ -157,7 +156,7 @@ fun OTPTextFields(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
-                ),
+                )
             )
 
             Spacer(modifier = Modifier.width(15.dp))
