@@ -219,7 +219,6 @@ fun OtpBugView(modifier: Modifier = Modifier) {
             keyboardType = KeyboardType.Number
         )
     )
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
