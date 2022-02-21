@@ -21,7 +21,7 @@ import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(navigate: () -> Unit) {
     Surface {
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
@@ -36,7 +36,7 @@ fun WelcomeScreen() {
                     .fillMaxSize()
             ) {
                 Box(modifier = Modifier.align(Alignment.BottomCenter)) {
-                    Contents()
+                    Contents(click = {navigate()})
                 }
             }
         }
@@ -44,7 +44,7 @@ fun WelcomeScreen() {
 }
 
 @Composable
-fun Contents() {
+fun Contents(click : ()-> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(20.dp)
@@ -64,7 +64,7 @@ fun Contents() {
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        DefaultButton(buttonClicked = {}, buttonText = "Get Started")
+        DefaultButton(buttonClicked = {click()}, buttonText = "Get Started")
 
     }
 }
@@ -74,6 +74,6 @@ fun Contents() {
 @Composable
 fun DefaultPreview() {
     FlunaceTheme {
-        WelcomeScreen()
+        WelcomeScreen({})
     }
 }

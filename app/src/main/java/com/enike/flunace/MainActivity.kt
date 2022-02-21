@@ -10,12 +10,15 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.enike.flunace.FlunaceScreens.SplashScreen
-import com.enike.flunace.FlunaceScreens.WelcomeScreen
+import androidx.navigation.navArgument
+import com.enike.flunace.FlunaceScreens.*
+import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
+import com.enike.flunace.ui.auth.createaccount.verifyotp.VerifyOtpScreen
 import com.enike.flunace.ui.splashscreen.SplashScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.welcomescreen.WelcomeScreen
@@ -33,6 +36,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun App() {
@@ -66,8 +70,27 @@ fun FlunaceNavHost(
                 navController.navigate(WelcomeScreen.name)
             })
         }
+
         composable(WelcomeScreen.name) {
-            WelcomeScreen()
+            WelcomeScreen(navigate = { navController.navigate(CreateAccountScreen.name) })
+        }
+
+        composable(CreateAccountScreen.name) {
+            CreateAccountScreen(navigate = { phone ->
+                navController.navigate("${VerifyOtpScreen.name}\$phone")
+            })
+        }
+
+        composable(
+            route = VerifyOtpScreen.name,
+            arguments = listOf(
+                navArgument("phone") {
+                    type = NavType.StringType
+                }
+            )
+        ) { entry ->
+            val phoneNumber = entry.arguments?.getString("phone")
+            VerifyOtpScreen(navigate = { }, arg = phoneNumber.toString())
         }
 
     }
