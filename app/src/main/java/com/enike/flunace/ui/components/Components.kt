@@ -2,7 +2,6 @@ package com.enike.flunace.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -24,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.theme.myColor
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun DefaultButton(
@@ -170,28 +167,24 @@ fun OtpCell(
     value: String,
     isCursorVisible: Boolean = false
 ) {
-
-    val scope = rememberCoroutineScope()
-    val (cursorSymbol, setCursorSymbol) = remember { mutableStateOf("") }
-
-    // Cursor blinking logic
-    LaunchedEffect(key1 = cursorSymbol, isCursorVisible) {
-        if (isCursorVisible) {
-            scope.launch {
-                delay(350)
-                setCursorSymbol(if (cursorSymbol.isEmpty()) "|" else "")
-            }
-        }
-    }
-
     // UI for OTP Character
     Box(
-        modifier = modifier
+        modifier = if (value.isNotEmpty()) modifier.background(
+            MaterialTheme.colors.error,
+            shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
+        )
+        else modifier.background(
+            MaterialTheme.colors.myColor,
+            shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
+        )
+
     ) {
         Text(
-            text = if (isCursorVisible) cursorSymbol else value,
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.align(Alignment.Center)
+            text = value,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(10.dp)
         )
     }
 }
@@ -219,6 +212,7 @@ fun OtpBugView(modifier: Modifier = Modifier) {
             keyboardType = KeyboardType.Number
         )
     )
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
@@ -226,15 +220,14 @@ fun OtpBugView(modifier: Modifier = Modifier) {
         (0 until otpLength).map { index ->
             OtpCell(
                 modifier = Modifier
+                    .size(80.dp)
                     .padding(10.dp)
-                    .size(50.dp)
                     .clickable {
                         focusRequester.requestFocus()
                         // this is required so if keyboard is dissmissed
                         // then could be open again with focus
                         keyboard?.show()
-                    }
-                    .background(MaterialTheme.colors.primary.copy(alpha = 0.3f), shape = MaterialTheme.shapes.small),
+                    },
                 value = editValue.getOrNull(index)?.toString() ?: "",
                 isCursorVisible = editValue.length == index
             )
