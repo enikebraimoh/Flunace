@@ -170,7 +170,7 @@ fun OtpCell(
     // UI for OTP Character
     Box(
         modifier = if (value.isNotEmpty()) modifier.background(
-            MaterialTheme.colors.error,
+            Color(0xFFFBE5D9),
             shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
         )
         else modifier.background(
