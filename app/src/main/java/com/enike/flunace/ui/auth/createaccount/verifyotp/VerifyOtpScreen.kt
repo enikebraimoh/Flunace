@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.components.OtpBugView
 import com.enike.flunace.ui.theme.FlunaceTheme
 
@@ -41,6 +42,12 @@ fun VerifyOtpScreen() {
         Spacer(modifier = Modifier.height(60.dp))
 
         OtpBugView()
+
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        DefaultButton(buttonText = "Next", isEnabled = true, buttonClicked = {})
+
 
         Spacer(modifier = Modifier.height(60.dp))
     }
