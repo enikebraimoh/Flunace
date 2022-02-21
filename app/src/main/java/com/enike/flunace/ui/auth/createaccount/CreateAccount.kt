@@ -28,7 +28,7 @@ import com.enike.flunace.ui.theme.FlunaceTheme
 import com.mukesh.OtpView
 
 @Composable
-fun CreateAccountScreen() {
+fun CreateAccountScreen(navigate: (phone : String) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +62,8 @@ fun CreateAccountScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        DefaultButton(buttonText = "Next", isEnabled = text.isNotBlank(), buttonClicked = {})
+        DefaultButton(buttonText = "Next", isEnabled = text.isNotBlank(),
+            buttonClicked = { navigate(text) })
 
     }
 }
@@ -73,7 +74,7 @@ fun CreateAccountScreen() {
 fun DefaultPreview() {
        FlunaceTheme {
            Surface() {
-               CreateAccountScreen()
+               CreateAccountScreen({})
            }
        }
 }

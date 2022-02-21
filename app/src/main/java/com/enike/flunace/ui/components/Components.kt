@@ -7,17 +7,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusOrder
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +45,7 @@ fun DefaultButton(
             disabledBackgroundColor = Color(0xFFFBE5D9)
         ),
         shape = MaterialTheme.shapes.small.copy(all = CornerSize(20.dp)),
-        onClick = { buttonClicked }
+        onClick = { buttonClicked() }
     ) {
         Text(
             text = buttonText,
@@ -94,78 +94,11 @@ fun CustomInputField(
 
 }
 
-@Composable
-fun OTPTextFields(
-    modifier: Modifier = Modifier,
-    length: Int,
-    onFilled: (code: String) -> Unit
-) {
-    var code: List<Char> by remember { mutableStateOf(listOf()) }
-    val focusRequesters: List<FocusRequester> = remember {
-        val temp = mutableListOf<FocusRequester>()
-
-        repeat(length) {
-            temp.add(FocusRequester())
-        }
-        temp
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.height(50.dp)
-    ) {
-        (0 until length).forEach { index ->
-            TextField(
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .focusOrder(focusRequester = focusRequesters[index]) {
-                        focusRequesters[index + 1].requestFocus()
-                    },
-                shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp)),
-                textStyle = MaterialTheme.typography.subtitle1,
-                singleLine = true,
-                value = code.getOrNull(index = index)?.takeIf {
-                    it.isDigit()
-                }?.toString() ?: "",
-                onValueChange = { value: String ->
-                    if (focusRequesters[index].freeFocus()) {
-                        val temp = code.toMutableList()
-                        if (value == "") {
-                            if (temp.size > index) {
-                                temp.removeAt(index = index)
-                                code = temp
-                                focusRequesters.getOrNull(index - 1)?.requestFocus()
-                            }
-                        } else {
-                            if (code.size > index) {
-                                temp[index] = value.getOrNull(0) ?: ' '
-                            } else {
-                                temp.add(value.getOrNull(0) ?: ' ')
-                                code = temp
-                                focusRequesters.getOrNull(index + 1)?.requestFocus() ?: onFilled(
-                                    code.joinToString(separator = "")
-                                )
-                            }
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next
-                )
-            )
-
-            Spacer(modifier = Modifier.width(15.dp))
-        }
-    }
-}
 
 @Composable
 fun OtpCell(
     modifier: Modifier = Modifier,
     value: String,
-    isCursorVisible: Boolean = false
 ) {
     // UI for OTP Character
     Box(
@@ -189,20 +122,23 @@ fun OtpCell(
     }
 }
 
-@ExperimentalComposeUiApi
+
 @Composable
-fun OtpBugView(modifier: Modifier = Modifier) {
-    val (editValue, setEditValue) = remember { mutableStateOf("") }
-    val otpLength = remember { 4 }
+fun OtpBugView(
+    modifier: Modifier = Modifier,
+    editTextValue: String,
+    otpLength: Int,
+    setEditTextValue: (String) ->  Unit,
+) {
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
 
     // hidden TextField for controlling OTP Cells UI
     TextField(
-        value = editValue,
-        onValueChange = {
-            if (it.length <= otpLength) {
-                setEditValue(it)
+        value = editTextValue,
+        onValueChange = { value ->
+            if (value.length <= otpLength) {
+                setEditTextValue(value)
             }
         },
         modifier = Modifier
@@ -228,8 +164,7 @@ fun OtpBugView(modifier: Modifier = Modifier) {
                         // then could be open again with focus
                         keyboard?.show()
                     },
-                value = editValue.getOrNull(index)?.toString() ?: "",
-                isCursorVisible = editValue.length == index
+                value = editTextValue.getOrNull(index)?.toString() ?: ""
             )
         }
     }
@@ -264,12 +199,14 @@ fun DefaultButtonPreview() {
     }
 }
 
-@ExperimentalComposeUiApi
+
 @Preview(name = "otp preview", showBackground = true)
 @Composable
 fun DefaultOtpPreview() {
     FlunaceTheme {
-        OtpBugView()
+        OtpBugView( otpLength = 4,
+            editTextValue = "",
+            setEditTextValue = {})
     }
 }
 
