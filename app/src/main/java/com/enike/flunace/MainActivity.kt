@@ -77,12 +77,12 @@ fun FlunaceNavHost(
 
         composable(CreateAccountScreen.name) {
             CreateAccountScreen(navigate = { phone ->
-                navController.navigate("${VerifyOtpScreen.name}\$phone")
+                navController.navigate("${VerifyOtpScreen.name}/$phone")
             })
         }
 
         composable(
-            route = VerifyOtpScreen.name,
+            route = "${VerifyOtpScreen.name}/{phone}",
             arguments = listOf(
                 navArgument("phone") {
                     type = NavType.StringType

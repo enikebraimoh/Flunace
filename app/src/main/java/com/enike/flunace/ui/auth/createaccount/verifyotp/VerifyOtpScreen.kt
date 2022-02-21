@@ -44,8 +44,7 @@ fun VerifyOtpScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            text = "Enter the code from the SMS \n   sent to you at\n" +
-                    arg.toString(),
+            text = "Enter the code from the SMS sent to you at \n +234$arg",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.body2
         )
