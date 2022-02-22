@@ -1,4 +1,4 @@
-package com.enike.flunace.ui.auth.createaccount.verifyotp
+package com.enike.flunace.ui.auth.verifyotp
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
