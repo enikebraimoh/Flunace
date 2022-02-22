@@ -52,7 +52,9 @@ fun CreateAccountScreen(navigate: (phone : String) -> Unit) {
         Spacer(modifier = Modifier.height(60.dp))
         CustomInputField(
             text = text,
-            onTextChange = setText,
+            onTextChange = {
+               if (it.length<= 10) setText(it)
+            },
             leadingIcon = {
                 Text(
                     text = "+234",

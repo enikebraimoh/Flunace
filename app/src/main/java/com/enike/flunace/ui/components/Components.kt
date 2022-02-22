@@ -63,7 +63,10 @@ fun CustomInputField(
         .padding(5.dp)
         .fillMaxWidth(),
     text: String,
+    singleLine : Boolean = true,
     onTextChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions =
+        KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
     shapes: Shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp)),
     leadingIcon: @Composable () -> Unit,
     hint: String = "8140252210"
@@ -80,7 +83,8 @@ fun CustomInputField(
                     style = MaterialTheme.typography.subtitle1,
                 )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
             colors = TextFieldDefaults.textFieldColors(
                 disabledTextColor = Color.Transparent,
                 backgroundColor = Color.Transparent,
