@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.enike.flunace.FlunaceScreens.*
 import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
-import com.enike.flunace.ui.auth.createaccount.verifyotp.VerifyOtpScreen
+import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
 import com.enike.flunace.ui.splashscreen.SplashScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.welcomescreen.WelcomeScreen
