@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Flunace"
 include ':app'
+include ':data'
