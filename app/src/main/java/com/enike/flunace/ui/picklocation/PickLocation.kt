@@ -45,7 +45,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 @Composable
 fun Map() {
 
-    val nigeria = LatLng(9.0820, 8.6753)
+    val nigeria = LatLng(9.0765, 7.3986)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(nigeria, 10f)
     }
