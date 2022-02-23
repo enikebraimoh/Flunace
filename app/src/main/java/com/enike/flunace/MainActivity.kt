@@ -8,7 +8,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,6 +24,7 @@ import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
 import com.enike.flunace.ui.splashscreen.SplashScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.welcomescreen.WelcomeScreen
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +48,24 @@ fun App() {
     val currentScreen = FlunaceScreens.fromRoute(
         backstackEntry.value?.destination?.route
     )
+
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons = MaterialTheme.colors.isLight
+
+    SideEffect {
+        if (FlunaceScreens.fromRoute(navController.currentDestination?.route) == FlunaceScreens.fromRoute(SplashScreen.name)){
+            systemUiController.setSystemBarsColor(
+                color = Color(0xFFEF8A52),
+                darkIcons = useDarkIcons
+            )
+        }
+        else{
+            systemUiController.setSystemBarsColor(
+                color = Color.Transparent,
+                darkIcons = useDarkIcons
+            )
+        }
+    }
 
     Scaffold { inner_padding ->
         FlunaceNavHost(

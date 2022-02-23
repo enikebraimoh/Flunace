@@ -68,7 +68,7 @@ fun CustomInputField(
     keyboardOptions: KeyboardOptions =
         KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
     shapes: Shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp)),
-    leadingIcon: @Composable () -> Unit,
+    leadingIcon: @Composable (() -> Unit)? = null,
     hint: String = "8140252210"
 ) {
     Surface(color = MaterialTheme.colors.myColor, shape = shapes) {
@@ -118,6 +118,7 @@ fun OtpCell(
     ) {
         Text(
             text = value,
+            color = Color.Black,
             style = MaterialTheme.typography.h6,
             modifier = Modifier
                 .align(Alignment.Center)
