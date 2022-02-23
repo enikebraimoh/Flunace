@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.enike.flunace">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Flunace">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCCQW-9uNe2fdMGBCA2129_UctNKX5XQYQ"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
