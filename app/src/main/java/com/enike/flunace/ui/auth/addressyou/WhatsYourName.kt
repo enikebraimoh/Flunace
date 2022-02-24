@@ -68,7 +68,7 @@ fun WhatsYourNameScreen( navigate : ()  -> Unit) {
 
         Spacer(modifier = Modifier.height(60.dp))
         DefaultButton(buttonText = "Next", isEnabled = lastName.isNotBlank(),
-            buttonClicked = { })
+            buttonClicked = { navigate() })
     }
 
 }
