@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,6 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.airbnb.lottie.compose.*
+import com.enike.flunace.R
 import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.theme.myColor
@@ -36,7 +39,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun Map() {
-
     val nigeria = LatLng(9.0765, 7.3986)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(nigeria, 10f)
@@ -49,18 +51,28 @@ fun Map() {
         bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
     )
 
+
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.allow_locatiion_anim))
+    val progress by animateLottieCompositionAsState(composition = composition, restartOnPlay = false)
+
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
+        sheetPeekHeight = 420.dp,
         sheetContent = {
-            Column(modifier = Modifier.padding(20.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Box(modifier = Modifier.size(50.dp).background(MaterialTheme.colors.myColor, shape = MaterialTheme.shapes.small)) {
+                LottieAnimation(
+                    modifier = Modifier.size(100.dp),
+                    composition = composition,
+                    speed = progress,
+                    iterations = 100
+                )
 
-                }
-
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Where are you?",
                     textAlign = TextAlign.Center,
@@ -69,13 +81,11 @@ fun Map() {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Set your location find grocery stores \n" +
-                            "arround you,Allow us access \n" +
-                            "yours location",
+                    text = "Set your location to find grocery stores \naround you, Allow us access yours location",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.body2
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(5.dp))
 
                 DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
             }
@@ -140,6 +150,11 @@ fun Map() {
 }
 
 @Composable
+fun Loader() {
+
+}
+
+@Composable
 fun PermissionBottomSheet() {
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
@@ -148,13 +163,13 @@ fun PermissionBottomSheet() {
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            Column(modifier = Modifier.padding(20.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Box(modifier = Modifier.size(50.dp).background(MaterialTheme.colors.myColor, shape = MaterialTheme.shapes.small)) {
-
-                }
-                Spacer(modifier = Modifier.height(60.dp))
+                Loader()
+                Spacer(modifier = Modifier.height(40.dp))
                 Text(
                     text = "Where are you?",
                     textAlign = TextAlign.Center,
@@ -163,13 +178,11 @@ fun PermissionBottomSheet() {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Set your location find grocery stores \n" +
-                            "arround you,Allow us access \n" +
-                            "yours location",
+                    text = "Set your location to find grocery stores \naround you, Allow us access yours location",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.body2
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
             }
