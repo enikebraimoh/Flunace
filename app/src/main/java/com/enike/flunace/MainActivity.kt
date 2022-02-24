@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.enike.flunace.FlunaceScreens.*
+import com.enike.flunace.ui.auth.addressyou.WhatsYourNameScreen
 import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
 import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
 import com.enike.flunace.ui.splashscreen.SplashScreen
@@ -99,6 +100,12 @@ fun FlunaceNavHost(
         composable(CreateAccountScreen.name) {
             CreateAccountScreen(navigate = { phone ->
                 navController.navigate("${VerifyOtpScreen.name}/$phone")
+            })
+        }
+
+        composable(AddressYou.name) {
+            WhatsYourNameScreen(navigate ={
+
             })
         }
 
