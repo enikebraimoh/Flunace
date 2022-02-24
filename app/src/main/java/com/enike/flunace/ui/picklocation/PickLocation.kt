@@ -149,10 +149,11 @@ fun PermissionBottomSheet() {
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
             Column(modifier = Modifier.padding(20.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Box(modifier = Modifier.size(50.dp)) {
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Box(modifier = Modifier.size(50.dp).background(MaterialTheme.colors.myColor, shape = MaterialTheme.shapes.small)) {
 
                 }
-
                 Spacer(modifier = Modifier.height(60.dp))
                 Text(
                     text = "Where are you?",
@@ -168,7 +169,9 @@ fun PermissionBottomSheet() {
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.body2
                 )
-                Spacer(modifier = Modifier.height(60.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
             }
         }
     ) {
