@@ -1,45 +1,37 @@
 package com.enike.flunace.ui.picklocation
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
+import com.enike.flunace.ui.theme.myColor
 import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-
-import android.graphics.Bitmap
-import android.graphics.Canvas
-
-import androidx.core.content.ContextCompat
-
-import android.graphics.drawable.Drawable
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.ui.platform.LocalContext
-
-import com.google.android.gms.maps.model.BitmapDescriptor
-
-
-
 
 
 @Composable
@@ -53,52 +45,135 @@ fun Map() {
     val context = LocalContext.current
     val resources = LocalContext.current.resources
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        GoogleMap(
-            googleMapOptionsFactory = {
-                GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
-            }, uiSettings = MapUiSettings(zoomControlsEnabled = false),
-            cameraPositionState = cameraPositionState
-        ){
-            Marker(position = nigeria, title = "Nigeria",
-                icon = BitmapFromVector(context = context, vectorResId = com.enike.flunace.R.drawable.ic_location) )
-        }
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
+    )
 
-        Box(modifier = Modifier.padding(all = 20.dp)) {
-            Surface(
-                color = Color.White,
-                shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            Column(modifier = Modifier.padding(20.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Box(modifier = Modifier.size(50.dp).background(MaterialTheme.colors.myColor, shape = MaterialTheme.shapes.small)) {
+
+                }
+
+                Spacer(modifier = Modifier.height(60.dp))
+                Text(
+                    text = "Where are you?",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.h5
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Set your location find grocery stores \n" +
+                            "arround you,Allow us access \n" +
+                            "yours location",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.body2
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+
+                DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
+            }
+
+        }
+    ) { padding ->
+
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)) {
+            GoogleMap(
+                googleMapOptionsFactory = {
+                    GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
+                }, uiSettings = MapUiSettings(zoomControlsEnabled = false),
+                cameraPositionState = cameraPositionState
             ) {
-                TextField(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp, vertical = 5.dp)
-                        .fillMaxWidth(),
-                    value = text,
-                    onValueChange = setText,
-                    textStyle = MaterialTheme.typography.subtitle1,
-                    placeholder = {
-                        Text(
-                            color = Color.Gray,
-                            text = "Search for a location",
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                    },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-                    colors = TextFieldDefaults.textFieldColors(
-                        disabledTextColor = Color.Transparent,
-                        backgroundColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
+                Marker(
+                    position = nigeria, title = "Nigeria",
+                    icon = BitmapFromVector(
+                        context = context,
+                        vectorResId = com.enike.flunace.R.drawable.ic_location
                     )
                 )
+            }
+
+            Box(modifier = Modifier.padding(all = 20.dp)) {
+                Surface(
+                    color = Color.White,
+                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp, vertical = 5.dp)
+                            .fillMaxWidth(),
+                        value = text,
+                        onValueChange = setText,
+                        textStyle = MaterialTheme.typography.subtitle1,
+                        placeholder = {
+                            Text(
+                                color = Color.Gray,
+                                text = "Search for a location",
+                                style = MaterialTheme.typography.subtitle1,
+                            )
+                        },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                        colors = TextFieldDefaults.textFieldColors(
+                            disabledTextColor = Color.Transparent,
+                            backgroundColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent
+                        )
+                    )
+                }
             }
         }
 
     }
 
 
+}
+
+@Composable
+fun PermissionBottomSheet() {
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
+    )
+
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            Column(modifier = Modifier.padding(20.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(modifier = Modifier.size(50.dp)) {
+
+                }
+
+                Spacer(modifier = Modifier.height(60.dp))
+                Text(
+                    text = "Where are you?",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.h5
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Set your location find grocery stores \n" +
+                            "arround you,Allow us access \n" +
+                            "yours location",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.body2
+                )
+                Spacer(modifier = Modifier.height(60.dp))
+            }
+        }
+    ) {
+
+    }
 }
 
 private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
@@ -128,12 +203,22 @@ private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescript
 }
 
 
-@Preview(name = "MapPreview")
+@Preview(name = "MapPreview", showBackground = true)
 @Composable
 fun MapPreview() {
     FlunaceTheme {
         Surface() {
             Map()
+        }
+    }
+}
+
+@Preview(name = "BottomSheet", showBackground = true)
+@Composable
+fun BottomSheet() {
+    FlunaceTheme {
+        Surface() {
+            PermissionBottomSheet()
         }
     }
 }
