@@ -22,6 +22,7 @@ import com.enike.flunace.FlunaceScreens.*
 import com.enike.flunace.ui.auth.addressyou.WhatsYourNameScreen
 import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
 import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
+import com.enike.flunace.ui.picklocation.Map
 import com.enike.flunace.ui.splashscreen.SplashScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.enike.flunace.ui.welcomescreen.WelcomeScreen
@@ -104,9 +105,13 @@ fun FlunaceNavHost(
         }
 
         composable(AddressYou.name) {
-            WhatsYourNameScreen(navigate ={
-
+            WhatsYourNameScreen (navigate ={
+                navController.navigate(PickLocationScreen.name)
             })
+        }
+
+        composable(PickLocationScreen.name) {
+            Map ()
         }
 
         composable(
@@ -118,7 +123,9 @@ fun FlunaceNavHost(
             )
         ) { entry ->
             val phoneNumber = entry.arguments?.getString("phone")
-            VerifyOtpScreen(navigate = { }, arg = phoneNumber.toString())
+            VerifyOtpScreen(navigate = {
+                navController.navigate(AddressYou.name)
+            }, arg = phoneNumber.toString())
         }
 
     }

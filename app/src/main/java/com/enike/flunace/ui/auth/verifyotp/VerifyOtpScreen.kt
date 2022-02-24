@@ -62,6 +62,7 @@ fun VerifyOtpScreen(
         DefaultButton(buttonText = "Verify",
             isEnabled = editValue.length == otpLength,
             buttonClicked = {
+                navigate()
                 Toast.makeText(context, editValue, Toast.LENGTH_SHORT).show()
             })
 
