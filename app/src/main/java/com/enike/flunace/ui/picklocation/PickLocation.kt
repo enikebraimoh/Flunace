@@ -3,7 +3,6 @@ package com.enike.flunace.ui.picklocation
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,7 +24,6 @@ import com.airbnb.lottie.compose.*
 import com.enike.flunace.R
 import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
-import com.enike.flunace.ui.theme.myColor
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -52,24 +50,27 @@ fun Map() {
     )
 
 
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.allow_locatiion_anim))
-    val progress by animateLottieCompositionAsState(composition = composition, restartOnPlay = false)
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.location_permiss))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+        restartOnPlay = true
+    )
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
-        sheetPeekHeight = 420.dp,
+        sheetPeekHeight = 400.dp,
         sheetContent = {
-            Column(modifier = Modifier
-                .padding(20.dp)
-                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-
-                Spacer(modifier = Modifier.height(20.dp))
-
+            Column(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 LottieAnimation(
                     modifier = Modifier.size(100.dp),
                     composition = composition,
-                    speed = progress,
-                    iterations = 100
+                    progress = progress
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -81,21 +82,23 @@ fun Map() {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Set your location to find grocery stores \naround you, Allow us access yours location",
+                    text = "Allow us access your location\nto find grocery stores around you",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.body2
                 )
                 Spacer(modifier = Modifier.height(5.dp))
 
-                DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
+                DefaultButton(buttonText = "Yes, Allow", buttonClicked = { })
             }
 
         }
     ) { padding ->
 
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
             GoogleMap(
                 googleMapOptionsFactory = {
                     GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
@@ -163,9 +166,11 @@ fun PermissionBottomSheet() {
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-            Column(modifier = Modifier
-                .padding(20.dp)
-                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Loader()
@@ -178,13 +183,13 @@ fun PermissionBottomSheet() {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Set your location to find grocery stores \naround you, Allow us access yours location",
+                    text = "Allow us access your location\nto find grocery stores around you",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.body2
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 
-                DefaultButton(buttonText = "Yes, Allow", buttonClicked = {  })
+                DefaultButton(buttonText = "Yes, Allow", buttonClicked = { })
             }
         }
     ) {
