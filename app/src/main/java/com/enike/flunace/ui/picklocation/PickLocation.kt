@@ -3,14 +3,12 @@ package com.enike.flunace.ui.picklocation
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,128 +22,140 @@ import com.airbnb.lottie.compose.*
 import com.enike.flunace.R
 import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 
 
 @Composable
 fun Map() {
-    val nigeria = LatLng(9.0765, 7.3986)
+    val nigeria = LatLng(9.010754, 7.567909)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(nigeria, 10f)
     }
     val (text, setText) = remember { mutableStateOf("") }
     val context = LocalContext.current
     val resources = LocalContext.current.resources
-
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
     )
-
-
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.location_permiss))
-    val progress by animateLottieCompositionAsState(
-        composition = composition,
-        iterations = LottieConstants.IterateForever,
-        isPlaying = true,
-        restartOnPlay = true
+    val coroutineScope = rememberCoroutineScope()
+    val locationPermissionsState = rememberPermissionState(
+        android.Manifest.permission.ACCESS_FINE_LOCATION
     )
+
+    /*coroutineScope.launch {
+     bottomSheetScaffoldState.bottomSheetState.collapse()
+    }*/
+    when (locationPermissionsState.status) {
+        // If the camera permission is granted, then show screen with the feature enabled
+        PermissionStatus.Granted -> {
+            Text("Camera permission Granted")
+            Toast.makeText(context, "Camera permission Granted", Toast.LENGTH_SHORT).show()
+        }
+        is PermissionStatus.Denied -> {
+                val textToShow = if ((locationPermissionsState.status as PermissionStatus.Denied).shouldShowRationale) {
+                    // If the user has denied the permission but the rationale can be shown,
+                    // then gently explain why the app requires this permission
+                    "The camera is important for this app. Please grant the permission."
+                } else {
+                    // If it's the first time the user lands on this feature, or the user
+                    // doesn't want to be asked again for this permission, explain that the
+                    // permission is required
+                    "Camera permission required for this feature to be available. " +
+                            "Please grant the permission"
+                }
+                Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
-        sheetPeekHeight = 400.dp,
+        sheetPeekHeight = 0.dp,
         sheetContent = {
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LottieAnimation(
-                    modifier = Modifier.size(100.dp),
-                    composition = composition,
-                    progress = progress
-                )
+            BottomSheetContent(allowButton = {
+                locationPermissionsState.launchPermissionRequest()
+            })
+        },
 
-                Spacer(modifier = Modifier.height(20.dp))
-                Text(
-                    text = "Where are you?",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h5
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Allow us access your location\nto find grocery stores around you",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.body2
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-
-                DefaultButton(buttonText = "Yes, Allow", buttonClicked = { })
-            }
-
-        }
+        sheetShape = MaterialTheme.shapes.large,
     ) { padding ->
+        MapContent(
+            context = context,
+            padding = padding,
+            nigeria = nigeria,
+            cameraPositionState = cameraPositionState,
+            text = text,
+            setText = setText
+        )
+    }
+}
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+@Composable
+fun MapContent(
+    context: Context,
+    padding: PaddingValues,
+    nigeria: LatLng,
+    cameraPositionState: CameraPositionState,
+    text: String,
+    setText: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding)
+    ) {
+        GoogleMap(
+            googleMapOptionsFactory = {
+                GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
+            }, uiSettings = MapUiSettings(zoomControlsEnabled = false),
+            cameraPositionState = cameraPositionState
         ) {
-            GoogleMap(
-                googleMapOptionsFactory = {
-                    GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
-                }, uiSettings = MapUiSettings(zoomControlsEnabled = false),
-                cameraPositionState = cameraPositionState
-            ) {
-                Marker(
-                    position = nigeria, title = "Nigeria",
-                    icon = BitmapFromVector(
-                        context = context,
-                        vectorResId = com.enike.flunace.R.drawable.ic_location
-                    )
+            Marker(
+                position = nigeria, title = "Nigeria",
+                icon = BitmapFromVector(
+                    context = context,
+                    vectorResId = com.enike.flunace.R.drawable.ic_location
                 )
-            }
-
-            Box(modifier = Modifier.padding(all = 20.dp)) {
-                Surface(
-                    color = Color.White,
-                    shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .padding(horizontal = 20.dp, vertical = 5.dp)
-                            .fillMaxWidth(),
-                        value = text,
-                        onValueChange = setText,
-                        textStyle = MaterialTheme.typography.subtitle1,
-                        placeholder = {
-                            Text(
-                                color = Color.Gray,
-                                text = "Search for a location",
-                                style = MaterialTheme.typography.subtitle1,
-                            )
-                        },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
-                        colors = TextFieldDefaults.textFieldColors(
-                            disabledTextColor = Color.Transparent,
-                            backgroundColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent
-                        )
-                    )
-                }
-            }
+            )
         }
+
+        Surface(
+            modifier = Modifier.padding(all = 20.dp),
+            color = Color.White,
+            shape = MaterialTheme.shapes.small.copy(all = CornerSize(15.dp))
+        ) {
+            TextField(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 5.dp)
+                    .fillMaxWidth(),
+                value = text,
+                onValueChange = setText,
+                textStyle = MaterialTheme.typography.subtitle1,
+                placeholder = {
+                    Text(
+                        color = Color.Gray,
+                        text = "Search for a location",
+                        style = MaterialTheme.typography.subtitle1,
+                    )
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
+                colors = TextFieldDefaults.textFieldColors(
+                    disabledTextColor = Color.Transparent,
+                    backgroundColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                )
+            )
+        }
+
 
     }
 
@@ -155,47 +165,91 @@ fun Map() {
 @Composable
 fun Loader() {
 
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.location_permiss))
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = LottieConstants.IterateForever,
+        isPlaying = true,
+        restartOnPlay = true
+    )
+
+    LottieAnimation(
+        modifier = Modifier.size(100.dp),
+        composition = composition,
+        progress = progress
+    )
 }
 
 @Composable
-fun PermissionBottomSheet() {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
-    )
-
-    BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-            Column(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Loader()
-                Spacer(modifier = Modifier.height(40.dp))
-                Text(
-                    text = "Where are you?",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h5
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Allow us access your location\nto find grocery stores around you",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.body2
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-
-                DefaultButton(buttonText = "Yes, Allow", buttonClicked = { })
-            }
-        }
+fun BottomSheetContent(
+    allowButton: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
 
+        Loader()
+
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Where are you?",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h5
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "Allow us access your location\nto find grocery stores around you",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.body2
+        )
+
+        DefaultButton(buttonText = "Yes, Allow", buttonClicked = { allowButton() })
     }
 }
+
+
+@Composable
+private fun FeatureThatRequiresCameraPermission() {
+
+    // Camera permission state
+    val cameraPermissionState = rememberPermissionState(
+        android.Manifest.permission.CAMERA
+    )
+
+    when (cameraPermissionState.status) {
+        // If the camera permission is granted, then show screen with the feature enabled
+        PermissionStatus.Granted -> {
+            Text("Camera permission Granted")
+        }
+        is PermissionStatus.Denied -> {
+            Column {
+                val textToShow =
+                    if ((cameraPermissionState.status as PermissionStatus.Denied).shouldShowRationale) {
+                        // If the user has denied the permission but the rationale can be shown,
+                        // then gently explain why the app requires this permission
+                        "The camera is important for this app. Please grant the permission."
+                    } else {
+                        // If it's the first time the user lands on this feature, or the user
+                        // doesn't want to be asked again for this permission, explain that the
+                        // permission is required
+                        "Camera permission required for this feature to be available. " +
+                                "Please grant the permission"
+                    }
+
+                Text(textToShow)
+                Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
+                    Text("Request permission")
+                }
+            }
+        }
+    }
+
+}
+
 
 private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
     // below line is use to generate a drawable.
@@ -239,7 +293,7 @@ fun MapPreview() {
 fun BottomSheet() {
     FlunaceTheme {
         Surface() {
-            PermissionBottomSheet()
+            BottomSheetContent({})
         }
     }
 }

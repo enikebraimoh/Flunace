@@ -21,6 +21,7 @@ allprojects {
         kotlinOptions {
             freeCompilerArgs += [
                     "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes",
+                    "-Xopt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
                     "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xuse-experimental=kotlinx.coroutines.InternalCoroutinesApi",
                     "-Xuse-experimental=androidx.compose.animation.ExperimentalAnimationApi",
