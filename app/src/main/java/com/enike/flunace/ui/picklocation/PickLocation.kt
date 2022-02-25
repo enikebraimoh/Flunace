@@ -77,6 +77,7 @@ fun Map() {
     BottomSheetScaffold(
         scaffoldState = bottomSheetScaffoldState,
         sheetPeekHeight = 0.dp,
+        sheetGesturesEnabled = false,
         sheetContent = {
             BottomSheetContent(allowButton = {
                 locationPermissionsState.launchPermissionRequest()
