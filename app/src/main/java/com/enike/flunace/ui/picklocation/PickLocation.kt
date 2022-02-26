@@ -24,12 +24,14 @@ import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -52,14 +54,22 @@ fun Map() {
     /*coroutineScope.launch {
      bottomSheetScaffoldState.bottomSheetState.collapse()
     }*/
+
     when (locationPermissionsState.status) {
         // If the camera permission is granted, then show screen with the feature enabled
         PermissionStatus.Granted -> {
-            Text("Camera permission Granted")
-            Toast.makeText(context, "Camera permission Granted", Toast.LENGTH_SHORT).show()
+            //Text("Camera permission Granted")
+            //Toast.makeText(context, "Camera permission Granted", Toast.LENGTH_SHORT).show()
+            LaunchedEffect(key1 = 1, block = {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.snackbarHostState.showSnackbar("Camera permission Granted")
+                   // bottomSheetScaffoldState.bottomSheetState.collapse()
+                }
+            })
+            getUserLocation()
         }
         is PermissionStatus.Denied -> {
-                val textToShow = if ((locationPermissionsState.status as PermissionStatus.Denied).shouldShowRationale) {
+                val textToShow = if (locationPermissionsState.status.shouldShowRationale) {
                     // If the user has denied the permission but the rationale can be shown,
                     // then gently explain why the app requires this permission
                     "The camera is important for this app. Please grant the permission."
@@ -70,7 +80,13 @@ fun Map() {
                     "Camera permission required for this feature to be available. " +
                             "Please grant the permission"
                 }
-                Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show()
+
+           LaunchedEffect(key1 = 1, block = {
+               coroutineScope.launch {
+                   bottomSheetScaffoldState.snackbarHostState.showSnackbar(textToShow)
+                  // bottomSheetScaffoldState.bottomSheetState.collapse()
+               }
+           })
         }
     }
 
@@ -95,6 +111,10 @@ fun Map() {
             setText = setText
         )
     }
+}
+
+fun getUserLocation() {
+    TODO("Not yet implemented")
 }
 
 @Composable
