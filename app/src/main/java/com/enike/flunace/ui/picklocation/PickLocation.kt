@@ -25,6 +25,7 @@ import com.enike.flunace.ui.theme.FlunaceTheme
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -62,31 +63,30 @@ fun Map() {
             //Toast.makeText(context, "Camera permission Granted", Toast.LENGTH_SHORT).show()
             LaunchedEffect(key1 = 1, block = {
                 coroutineScope.launch {
-                    bottomSheetScaffoldState.snackbarHostState.showSnackbar("Camera permission Granted")
-                   // bottomSheetScaffoldState.bottomSheetState.collapse()
+                     getUserLocation(context = context)
+                     bottomSheetScaffoldState.bottomSheetState.collapse()
                 }
             })
-            getUserLocation()
         }
         is PermissionStatus.Denied -> {
-                val textToShow = if (locationPermissionsState.status.shouldShowRationale) {
-                    // If the user has denied the permission but the rationale can be shown,
-                    // then gently explain why the app requires this permission
-                    "The camera is important for this app. Please grant the permission."
-                } else {
-                    // If it's the first time the user lands on this feature, or the user
-                    // doesn't want to be asked again for this permission, explain that the
-                    // permission is required
-                    "Camera permission required for this feature to be available. " +
-                            "Please grant the permission"
-                }
+            val textToShow = if (locationPermissionsState.status.shouldShowRationale) {
+                // If the user has denied the permission but the rationale can be shown,
+                // then gently explain why the app requires this permission
+                "The camera is important for this app. Please grant the permission."
+            } else {
+                // If it's the first time the user lands on this feature, or the user
+                // doesn't want to be asked again for this permission, explain that the
+                // permission is required
+                "Camera permission required for this feature to be available. " +
+                        "Please grant the permission"
+            }
 
-           LaunchedEffect(key1 = 1, block = {
-               coroutineScope.launch {
-                   bottomSheetScaffoldState.snackbarHostState.showSnackbar(textToShow)
-                  // bottomSheetScaffoldState.bottomSheetState.collapse()
-               }
-           })
+            LaunchedEffect(key1 = 1, block = {
+                coroutineScope.launch {
+                    bottomSheetScaffoldState.snackbarHostState.showSnackbar(textToShow)
+                    // bottomSheetScaffoldState.bottomSheetState.collapse()
+                }
+            })
         }
     }
 
@@ -113,8 +113,39 @@ fun Map() {
     }
 }
 
-fun getUserLocation() {
-    TODO("Not yet implemented")
+fun getUserLocation(context: Context) {
+
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+
+    try {
+        val locationResult = fusedLocationProviderClient.lastLocation
+
+        locationResult.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val lastKnownLocation = task.result
+
+                if (lastKnownLocation != null) {
+                    LatLng(lastKnownLocation.altitude, lastKnownLocation.longitude)
+
+                    Toast.makeText(
+                        context," lat = ${lastKnownLocation.altitude},long = ${lastKnownLocation.longitude}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Exception, Current User location is null",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+
+        }
+
+    } catch (e: SecurityException) {
+        Toast.makeText(context, "Exception:  $e.message.toString()", Toast.LENGTH_SHORT).show()
+    }
 }
 
 @Composable
