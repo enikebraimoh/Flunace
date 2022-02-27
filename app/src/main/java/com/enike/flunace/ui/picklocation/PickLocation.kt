@@ -38,11 +38,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun Map() {
 
-    val (Lat, setlat) = remember { mutableStateOf(11.7024) }
-    val (Lon, setlon) = remember { mutableStateOf(9.3340) }
+
+    val DEFAULT_LAT = 11.714997
+    val DEFAULT_LON = 9.354813
+
+    val (Lat, setlat) = remember { mutableStateOf(DEFAULT_LAT) }
+    val (Lon, setlon) = remember { mutableStateOf(DEFAULT_LON) }
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(11.7024, 9.3340), 11f)
+        position = CameraPosition.fromLatLngZoom(LatLng(DEFAULT_LAT, DEFAULT_LON), 19.2f)
     }
     val (text, setText) = remember { mutableStateOf("") }
 
@@ -95,7 +99,7 @@ fun Map() {
             text = text,
             setText = setText,
         ) {
-            if (Lat != 11.7024) {
+            if (Lat != DEFAULT_LAT) {
                 Marker(
                     position = LatLng(Lat, Lon),
                     title = "My location",
