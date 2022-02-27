@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,13 +37,11 @@ import com.google.maps.android.compose.*
 import kotlinx.coroutines.launch
 
 
+private const val DEFAULT_LAT = 11.714997
+private const val DEFAULT_LON = 9.354813
+
 @Composable
 fun Map() {
-
-
-    val DEFAULT_LAT = 11.714997
-    val DEFAULT_LON = 9.354813
-
     val (Lat, setlat) = remember { mutableStateOf(DEFAULT_LAT) }
     val (Lon, setlon) = remember { mutableStateOf(DEFAULT_LON) }
 
@@ -121,6 +121,7 @@ fun MapContent(
     setText: (String) -> Unit,
     marker: @Composable () -> Unit
 ) {
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -129,7 +130,8 @@ fun MapContent(
         GoogleMap(
             googleMapOptionsFactory = {
                 GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(userLocation, 10f))
-            }, uiSettings = MapUiSettings(zoomControlsEnabled = false, tiltGesturesEnabled = false),
+            },
+            uiSettings = MapUiSettings(zoomControlsEnabled = false, tiltGesturesEnabled = false, rotationGesturesEnabled = false),
             cameraPositionState = cameraPositionState
         ) {
             marker()
@@ -146,7 +148,7 @@ fun MapContent(
                     .fillMaxWidth(),
                 value = text,
                 onValueChange = setText,
-                textStyle = MaterialTheme.typography.subtitle1,
+                textStyle = MaterialTheme.typography.subtitle1.copy(color = Color.Black),
                 placeholder = {
                     Text(
                         color = Color.Gray,
@@ -164,6 +166,25 @@ fun MapContent(
                     disabledIndicatorColor = Color.Transparent
                 )
             )
+        }
+
+        if (userLocation.latitude != DEFAULT_LAT) {
+
+            Image(modifier = Modifier
+                .align(Alignment.Center)
+                .padding(bottom = 62.5.dp),painter = painterResource(id = R.drawable.ic_droppin), contentDescription = "" )
+
+            if (cameraPositionState.isMoving){
+
+            }else{
+                DefaultButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(20.dp)
+                        .fillMaxWidth(),
+                    buttonText = "Pick Location",
+                    buttonClicked = { Toast.makeText(context,cameraPositionState.position.target.toString(), Toast.LENGTH_SHORT).show()})
+            }
         }
 
 
