@@ -4,6 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.widget.Toast
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateOffsetAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
@@ -12,6 +15,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -121,6 +125,23 @@ fun MapContent(
     setText: (String) -> Unit,
     marker: @Composable () -> Unit
 ) {
+    val animPinOffSef: Offset by animateOffsetAsState(
+        targetValue = if (cameraPositionState.isMoving) Offset(0f, -20f)
+        else Offset(0f, 0f),
+        animationSpec = tween(
+            durationMillis = 100,
+            easing = FastOutSlowInEasing
+        )
+    )
+
+    val animOffSef: Offset by animateOffsetAsState(
+        targetValue = if (cameraPositionState.isMoving) Offset(0f, 100f)
+        else Offset(0f, 0f),
+        animationSpec = tween(
+            durationMillis = 500,
+            easing = FastOutSlowInEasing
+        )
+    )
 
     Box(
         modifier = Modifier
@@ -131,7 +152,11 @@ fun MapContent(
             googleMapOptionsFactory = {
                 GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(userLocation, 10f))
             },
-            uiSettings = MapUiSettings(zoomControlsEnabled = false, tiltGesturesEnabled = false, rotationGesturesEnabled = false),
+            uiSettings = MapUiSettings(
+                zoomControlsEnabled = false,
+                tiltGesturesEnabled = false,
+                rotationGesturesEnabled = false
+            ),
             cameraPositionState = cameraPositionState
         ) {
             marker()
@@ -170,21 +195,29 @@ fun MapContent(
 
         if (userLocation.latitude != DEFAULT_LAT) {
 
-            Image(modifier = Modifier
-                .align(Alignment.Center)
-                .padding(bottom = 62.5.dp),painter = painterResource(id = R.drawable.ic_droppin), contentDescription = "" )
+            Image(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(bottom = 62.5.dp)
+                    .offset(animPinOffSef.x.dp, animPinOffSef.y.dp),
+                painter = painterResource(id = R.drawable.ic_droppin),
+                contentDescription = ""
+            )
+            DefaultButton(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(20.dp)
+                    .fillMaxWidth()
+                    .offset(animOffSef.x.dp, animOffSef.y.dp),
+                buttonText = "Pick Location",
+                buttonClicked = {
+                    Toast.makeText(
+                        context,
+                        cameraPositionState.position.target.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                })
 
-            if (cameraPositionState.isMoving){
-
-            }else{
-                DefaultButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(20.dp)
-                        .fillMaxWidth(),
-                    buttonText = "Pick Location",
-                    buttonClicked = { Toast.makeText(context,cameraPositionState.position.target.toString(), Toast.LENGTH_SHORT).show()})
-            }
         }
 
 
