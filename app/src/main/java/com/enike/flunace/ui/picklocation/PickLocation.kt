@@ -24,8 +24,8 @@ import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -37,11 +37,15 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Map() {
-    val nigeria = LatLng(9.010754, 7.567909)
+
+    val (Lat, setlat) = remember { mutableStateOf(11.7024) }
+    val (Lon, setlon) = remember { mutableStateOf(9.3340) }
+
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(nigeria, 10f)
+        position = CameraPosition.fromLatLngZoom(LatLng(11.7024, 9.3340), 11f)
     }
     val (text, setText) = remember { mutableStateOf("") }
+
     val context = LocalContext.current
     val resources = LocalContext.current.resources
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -52,41 +56,22 @@ fun Map() {
         android.Manifest.permission.ACCESS_FINE_LOCATION
     )
 
-    /*coroutineScope.launch {
-     bottomSheetScaffoldState.bottomSheetState.collapse()
-    }*/
-
     when (locationPermissionsState.status) {
         // If the camera permission is granted, then show screen with the feature enabled
         PermissionStatus.Granted -> {
-            //Text("Camera permission Granted")
-            //Toast.makeText(context, "Camera permission Granted", Toast.LENGTH_SHORT).show()
-            LaunchedEffect(key1 = 1, block = {
+            getUserLocation(context = context) {
+                setlat(it.latitude)
+                setlon(it.longitude)
                 coroutineScope.launch {
-                     getUserLocation(context = context)
-                     bottomSheetScaffoldState.bottomSheetState.collapse()
+                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                    cameraPositionState.animate(update = CameraUpdateFactory.newLatLngZoom(it, 17f))
                 }
-            })
-        }
-        is PermissionStatus.Denied -> {
-            val textToShow = if (locationPermissionsState.status.shouldShowRationale) {
-                // If the user has denied the permission but the rationale can be shown,
-                // then gently explain why the app requires this permission
-                "The camera is important for this app. Please grant the permission."
-            } else {
-                // If it's the first time the user lands on this feature, or the user
-                // doesn't want to be asked again for this permission, explain that the
-                // permission is required
-                "Camera permission required for this feature to be available. " +
-                        "Please grant the permission"
+
             }
 
-            LaunchedEffect(key1 = 1, block = {
-                coroutineScope.launch {
-                    bottomSheetScaffoldState.snackbarHostState.showSnackbar(textToShow)
-                    // bottomSheetScaffoldState.bottomSheetState.collapse()
-                }
-            })
+        }
+        is PermissionStatus.Denied -> {
+
         }
     }
 
@@ -105,57 +90,32 @@ fun Map() {
         MapContent(
             context = context,
             padding = padding,
-            nigeria = nigeria,
+            userLocation = LatLng(Lat, Lon),
             cameraPositionState = cameraPositionState,
             text = text,
-            setText = setText
-        )
-    }
-}
-
-fun getUserLocation(context: Context) {
-
-    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-
-    try {
-        val locationResult = fusedLocationProviderClient.lastLocation
-
-        locationResult.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val lastKnownLocation = task.result
-
-                if (lastKnownLocation != null) {
-                    LatLng(lastKnownLocation.altitude, lastKnownLocation.longitude)
-
-                    Toast.makeText(
-                        context," lat = ${lastKnownLocation.altitude},long = ${lastKnownLocation.longitude}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                Toast.makeText(
-                    context,
-                    "Exception, Current User location is null",
-                    Toast.LENGTH_SHORT
-                ).show()
+            setText = setText,
+        ) {
+            if (Lat != 11.7024) {
+                Marker(
+                    position = LatLng(Lat, Lon),
+                    title = "My location",
+                    icon = BitmapFromVector(context, R.drawable.ic_location)
+                )
             }
-
-
         }
-
-    } catch (e: SecurityException) {
-        Toast.makeText(context, "Exception:  $e.message.toString()", Toast.LENGTH_SHORT).show()
     }
 }
+
 
 @Composable
 fun MapContent(
     context: Context,
     padding: PaddingValues,
-    nigeria: LatLng,
+    userLocation: LatLng,
     cameraPositionState: CameraPositionState,
     text: String,
-    setText: (String) -> Unit
+    setText: (String) -> Unit,
+    marker: @Composable () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -164,17 +124,11 @@ fun MapContent(
     ) {
         GoogleMap(
             googleMapOptionsFactory = {
-                GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(nigeria, 10f))
-            }, uiSettings = MapUiSettings(zoomControlsEnabled = false),
+                GoogleMapOptions().camera(CameraPosition.fromLatLngZoom(userLocation, 10f))
+            }, uiSettings = MapUiSettings(zoomControlsEnabled = false, tiltGesturesEnabled = false),
             cameraPositionState = cameraPositionState
         ) {
-            Marker(
-                position = nigeria, title = "Nigeria",
-                icon = BitmapFromVector(
-                    context = context,
-                    vectorResId = com.enike.flunace.R.drawable.ic_location
-                )
-            )
+            marker()
         }
 
         Surface(
@@ -216,7 +170,6 @@ fun MapContent(
 
 @Composable
 fun Loader() {
-
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.location_permiss))
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -327,6 +280,36 @@ private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescript
 
     // after generating our bitmap we are returning our bitmap.
     return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
+
+
+fun getUserLocation(context: Context, callback: (latlon: LatLng) -> Unit) {
+
+    val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+    try {
+        val locationResult = fusedLocationProviderClient.lastLocation
+
+        locationResult.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val lastKnownLocation = task.result
+
+                if (lastKnownLocation != null) {
+                    //Toast.makeText(context,"${lastKnownLocation.altitude},  ${lastKnownLocation.longitude}", Toast.LENGTH_SHORT).show()
+                    callback(LatLng(lastKnownLocation.latitude, lastKnownLocation.longitude))
+                }
+            } else {
+                Toast.makeText(
+                    context,
+                    "Exception, Current User location is null",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+    } catch (e: SecurityException) {
+        Toast.makeText(context, "Exception:  $e.message.toString()", Toast.LENGTH_SHORT).show()
+    }
+
 }
 
 
