@@ -198,7 +198,7 @@ fun MapContent(
             Image(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(bottom = 62.5.dp)
+                    .padding(bottom = 45.dp)
                     .offset(animPinOffSef.x.dp, animPinOffSef.y.dp),
                 painter = painterResource(id = R.drawable.ic_droppin),
                 contentDescription = ""
