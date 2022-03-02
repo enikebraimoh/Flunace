@@ -8,10 +8,8 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -63,7 +61,7 @@ fun CustomInputField(
         .padding(5.dp)
         .fillMaxWidth(),
     text: String,
-    singleLine : Boolean = true,
+    singleLine: Boolean = true,
     onTextChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions =
         KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
@@ -133,7 +131,7 @@ fun OtpBugView(
     modifier: Modifier = Modifier,
     editTextValue: String,
     otpLength: Int,
-    setEditTextValue: (String) ->  Unit,
+    setEditTextValue: (String) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
@@ -209,7 +207,7 @@ fun DefaultButtonPreview() {
 @Composable
 fun DefaultOtpPreview() {
     FlunaceTheme {
-        OtpBugView( otpLength = 4,
+        OtpBugView(otpLength = 4,
             editTextValue = "",
             setEditTextValue = {})
     }
