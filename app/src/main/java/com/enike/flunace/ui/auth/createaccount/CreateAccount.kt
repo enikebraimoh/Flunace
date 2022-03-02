@@ -72,7 +72,7 @@ fun CreateAccountScreen(navigate: (phone: String) -> Unit) {
 @Composable
 fun DefaultPreview() {
     FlunaceTheme {
-        Surface() {
+        Surface {
             CreateAccountScreen({})
         }
     }
