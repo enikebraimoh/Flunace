@@ -20,7 +20,7 @@ import com.enike.flunace.ui.components.DefaultButton
 import com.enike.flunace.ui.theme.FlunaceTheme
 
 @Composable
-fun WhatsYourNameScreen( navigate : ()  -> Unit) {
+fun WhatsYourNameScreen(navigate: () -> Unit) {
     val (firstName, setFirstNameText) = remember { mutableStateOf("") }
     val (lastName, setLastNameText) = remember { mutableStateOf("") }
 
@@ -77,7 +77,7 @@ fun WhatsYourNameScreen( navigate : ()  -> Unit) {
 @Composable
 fun DefaultPreview() {
     FlunaceTheme {
-        Surface() {
+        Surface {
             WhatsYourNameScreen({})
         }
     }

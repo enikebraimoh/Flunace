@@ -78,8 +78,8 @@ fun VerifyOtpScreen(
 @Composable
 fun DefaultPreview() {
     FlunaceTheme {
-        Surface() {
-            VerifyOtpScreen({},"")
+        Surface {
+            VerifyOtpScreen({}, "")
         }
     }
 }
