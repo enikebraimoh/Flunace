@@ -1,6 +1,5 @@
 package com.enike.flunace.ui.theme
 
-import android.widget.Button
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
 import androidx.compose.ui.unit.dp
