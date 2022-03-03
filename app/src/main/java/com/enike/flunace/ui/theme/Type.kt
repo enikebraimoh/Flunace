@@ -13,12 +13,14 @@ import com.enike.flunace.R
 private val CircularStd = FontFamily(
     Font(R.font.circular_std_regular),
     Font(R.font.circular_std_medium, FontWeight.Medium),
-    Font(R.font.circular_std_bold,FontWeight.Bold))
+    Font(R.font.circular_std_bold, FontWeight.Bold)
+)
 
 private val Montserrat = FontFamily(
     Font(R.font.montserrat_regular),
-    Font(R.font.montserrat_medium,FontWeight.Medium),
-    Font(R.font.montserrat_semibold,FontWeight.SemiBold))
+    Font(R.font.montserrat_medium, FontWeight.Medium),
+    Font(R.font.montserrat_semibold, FontWeight.SemiBold)
+)
 
 val Typography = Typography(
     h2 = TextStyle(
