@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.enike.flunace.ui.auth.addressyou.WhatsYourNameScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
 
@@ -31,6 +32,9 @@ fun Home() {
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
             BottomAppBar(
+                elevation = 5.dp,
+                cutoutShape = RoundedCornerShape(50),
+                backgroundColor = MaterialTheme.colors.background,
                 content = {
                     BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
                         BottomNavigationItem(
