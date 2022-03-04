@@ -31,7 +31,6 @@ fun Home() {
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
             BottomAppBar(
-                cutoutShape = RoundedCornerShape(50),
                 content = {
                     BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
                         BottomNavigationItem(
