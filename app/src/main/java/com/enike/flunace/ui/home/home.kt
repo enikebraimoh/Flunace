@@ -73,11 +73,10 @@ fun Home() {
                         BottomNavigationItem(
                             selected = selectedItem.value == "cart",
                             onClick = {
-                                selectedItem.value = "home"
-                                content.value = "Home Screen"
+                                selectedItem.value = "cart"
+                                content.value = "Cart Screen"
                             },
                             icon = {
-
                                 Icon(painter = painterResource(id = R.drawable.ic_cart_icon), contentDescription ="" )
                             },
                             label = {
