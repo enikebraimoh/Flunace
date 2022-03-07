@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enike.flunace.R
@@ -27,8 +29,11 @@ fun Home() {
         floatingActionButton = {
             FloatingActionButton(onClick = {
 
+                selectedItem.value = "stores"
+                content.value = "Stores Screen"
+
             }, shape = RoundedCornerShape(50)) {
-                Icon(painter = painterResource(id = R.drawable.ic_vendor), contentDescription ="" )
+                Icon(painter = painterResource(id = R.drawable.ic_vendor), contentDescription = "")
 
             }
         },
@@ -58,14 +63,17 @@ fun Home() {
                         BottomNavigationItem(
                             selected = selectedItem.value == "history",
                             onClick = {
-                                selectedItem.value = "home"
-                                content.value = "Home Screen"
+                                selectedItem.value = "history"
+                                content.value = "History Screen"
                             },
                             icon = {
-                                Icon(painter = painterResource(id = R.drawable.ic_history_icon), contentDescription ="" )
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_history_icon),
+                                    contentDescription = ""
+                                )
                             },
                             label = {
-                                Text(text = "Home")
+                                Text(text = "history")
                             },
                             alwaysShowLabel = false
                         )
@@ -77,24 +85,27 @@ fun Home() {
                                 content.value = "Cart Screen"
                             },
                             icon = {
-                                Icon(painter = painterResource(id = R.drawable.ic_cart_icon), contentDescription ="" )
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_cart_icon),
+                                    contentDescription = ""
+                                )
                             },
                             label = {
-                                Text(text = "Home")
+                                Text(text = "Cart")
                             },
                             alwaysShowLabel = false
                         )
                         BottomNavigationItem(
-                            selected = selectedItem.value == "home",
+                            selected = selectedItem.value == "settings",
                             onClick = {
-                                selectedItem.value = "home"
-                                content.value = "Home Screen"
+                                selectedItem.value = "settings"
+                                content.value = "Settings Screen"
                             },
                             icon = {
                                 Icon(imageVector = Icons.Default.Settings, contentDescription = "")
                             },
                             label = {
-                                Text(text = "Home")
+                                Text(text = "Settings")
                             },
                             alwaysShowLabel = false
                         )
