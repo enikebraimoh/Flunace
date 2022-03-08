@@ -60,12 +60,12 @@ fun Home() {
                                 content.value = "Home Screen"
                             },
                             icon = {
-                                Icon(imageVector = Icons.Default.Home, contentDescription = "")
+                                Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_explore), contentDescription = "")
                             },
                             label = {
-                                Text(text = "Home")
+                                Text(text = "Explore")
                             },
-                            alwaysShowLabel = false
+                            alwaysShowLabel = true
                         )
                         BottomNavigationItem(
                             selected = selectedItem.value == "history",
@@ -75,14 +75,14 @@ fun Home() {
                             },
                             icon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_history_icon),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_history),
                                     contentDescription = ""
                                 )
                             },
                             label = {
-                                Text(text = "history")
+                                Text(text = "History")
                             },
-                            alwaysShowLabel = false
+                            alwaysShowLabel = true
                         )
                         Spacer(modifier = Modifier.width(50.dp))
                         BottomNavigationItem(
@@ -93,14 +93,14 @@ fun Home() {
                             },
                             icon = {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_cart_icon),
+                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_buy),
                                     contentDescription = ""
                                 )
                             },
                             label = {
                                 Text(text = "Cart")
                             },
-                            alwaysShowLabel = false
+                            alwaysShowLabel = true
                         )
                         BottomNavigationItem(
                             selected = selectedItem.value == "settings",
@@ -109,12 +109,12 @@ fun Home() {
                                 content.value = "Settings Screen"
                             },
                             icon = {
-                                Icon(imageVector = Icons.Default.Settings, contentDescription = "")
+                                Icon(imageVector = ImageVector.vectorResource(id = R.drawable.ic_setting), contentDescription = "")
                             },
                             label = {
                                 Text(text = "Settings")
                             },
-                            alwaysShowLabel = false
+                            alwaysShowLabel = true
                         )
 
                     }
@@ -122,12 +122,7 @@ fun Home() {
             )
         }
     ) {
-        Box(
-            Modifier
-                .background(Color.Blue)
-                .padding(it)) {
 
-        }
     }
 }
 
