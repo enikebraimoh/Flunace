@@ -43,7 +43,6 @@ fun Home() {
                 backgroundColor = MaterialTheme.colors.background,
                 content = {
                     BottomNavigation(
-                        elevation = 20.dp,
                         backgroundColor = MaterialTheme.colors.background
                     ) {
                         BottomNavigationItem(
