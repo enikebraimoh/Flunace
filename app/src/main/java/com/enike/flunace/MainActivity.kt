@@ -55,13 +55,15 @@ fun App() {
     val useDarkIcons = MaterialTheme.colors.isLight
 
     SideEffect {
-        if (FlunaceScreens.fromRoute(navController.currentDestination?.route) == FlunaceScreens.fromRoute(SplashScreen.name)){
+        if (FlunaceScreens.fromRoute(navController.currentDestination?.route) == FlunaceScreens.fromRoute(
+                SplashScreen.name
+            )
+        ) {
             systemUiController.setSystemBarsColor(
                 color = Color(0xFFEF8A52),
                 darkIcons = useDarkIcons
             )
-        }
-        else{
+        } else {
             systemUiController.setSystemBarsColor(
                 color = Color.Transparent,
                 darkIcons = useDarkIcons
@@ -105,13 +107,13 @@ fun FlunaceNavHost(
         }
 
         composable(AddressYou.name) {
-            WhatsYourNameScreen (navigate ={
+            WhatsYourNameScreen(navigate = {
                 navController.navigate(PickLocationScreen.name)
             })
         }
 
         composable(PickLocationScreen.name) {
-            Map ()
+            Map()
         }
 
         composable(
