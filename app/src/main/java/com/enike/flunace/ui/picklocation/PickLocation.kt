@@ -45,7 +45,7 @@ private const val DEFAULT_LAT = 11.714997
 private const val DEFAULT_LON = 9.354813
 
 @Composable
-fun Map() {
+fun Map( navigate : () -> Unit ) {
     val (Lat, setlat) = remember { mutableStateOf(DEFAULT_LAT) }
     val (Lon, setlon) = remember { mutableStateOf(DEFAULT_LON) }
 
@@ -101,6 +101,7 @@ fun Map() {
             userLocation = LatLng(Lat, Lon),
             cameraPositionState = cameraPositionState,
             text = text,
+            navigate = { navigate() },
             setText = setText,
         ) {
             if (Lat != DEFAULT_LAT) {
@@ -123,6 +124,7 @@ fun MapContent(
     cameraPositionState: CameraPositionState,
     text: String,
     setText: (String) -> Unit,
+    navigate: () -> Unit,
     marker: @Composable () -> Unit
 ) {
     val animPinOffSef: Offset by animateOffsetAsState(
@@ -211,11 +213,13 @@ fun MapContent(
                     .offset(animOffSef.x.dp, animOffSef.y.dp),
                 buttonText = "Pick Location",
                 buttonClicked = {
+                    navigate()
                     Toast.makeText(
                         context,
                         cameraPositionState.position.target.toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+
                 })
 
         }
@@ -376,7 +380,7 @@ fun getUserLocation(context: Context, callback: (latlon: LatLng) -> Unit) {
 fun MapPreview() {
     FlunaceTheme {
         Surface() {
-            Map()
+            Map({})
         }
     }
 }
