@@ -22,6 +22,7 @@ import com.enike.flunace.FlunaceScreens.*
 import com.enike.flunace.ui.auth.addressyou.WhatsYourNameScreen
 import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
 import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
+import com.enike.flunace.ui.home.Home
 import com.enike.flunace.ui.picklocation.Map
 import com.enike.flunace.ui.splashscreen.SplashScreen
 import com.enike.flunace.ui.theme.FlunaceTheme
@@ -128,6 +129,10 @@ fun FlunaceNavHost(
             VerifyOtpScreen(navigate = {
                 navController.navigate(AddressYou.name)
             }, arg = phoneNumber.toString())
+        }
+
+        composable(Home.name) {
+            Home()
         }
 
     }
