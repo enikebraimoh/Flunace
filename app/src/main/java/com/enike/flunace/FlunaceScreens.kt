@@ -7,6 +7,7 @@ enum class FlunaceScreens() {
     CreateAccountScreen,
     VerifyOtpScreen,
     AddressYou,
+    Home,
     PickLocationScreen;
 
     companion object {
@@ -18,7 +19,7 @@ enum class FlunaceScreens() {
                 VerifyOtpScreen.name -> VerifyOtpScreen
                 AddressYou.name -> AddressYou
                 PickLocationScreen.name -> PickLocationScreen
-
+                Home.name -> Home
                 null -> SplashScreen
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }
