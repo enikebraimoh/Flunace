@@ -114,7 +114,9 @@ fun FlunaceNavHost(
         }
 
         composable(PickLocationScreen.name) {
-            Map()
+            Map(navigate = {
+                navController.navigate(Home.name)
+            })
         }
 
         composable(
