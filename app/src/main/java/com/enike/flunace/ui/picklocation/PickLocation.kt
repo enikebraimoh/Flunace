@@ -44,8 +44,9 @@ import kotlinx.coroutines.launch
 private const val DEFAULT_LAT = 11.714997
 private const val DEFAULT_LON = 9.354813
 
+
 @Composable
-fun Map( navigate : () -> Unit ) {
+fun Map(navigate: () -> Unit) {
     val (Lat, setlat) = remember { mutableStateOf(DEFAULT_LAT) }
     val (Lon, setlon) = remember { mutableStateOf(DEFAULT_LON) }
 
