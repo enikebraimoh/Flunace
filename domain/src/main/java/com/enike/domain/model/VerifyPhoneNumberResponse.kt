@@ -1,3 +1,12 @@
 package com.enike.domain.model
 
-data class VerifyPhoneNumberResponse(val status: String, val message: String, val data: Any)
+import com.google.gson.annotations.SerializedName
+
+data class VerifyPhoneNumberResponse(
+    @SerializedName("status")
+    val status: String,
+    @SerializedName("message")
+    val message: String,
+    @SerializedName("data")
+    val data: Any
+)
