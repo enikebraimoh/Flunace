@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface FlunaceApi {
 
-    @GET
+    @GET("/asdfghj/dfgh")
     suspend fun verifyPhoneNumber( phoneNumber : String ): VerifyPhoneNumberResponse
 
 }
