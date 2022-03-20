@@ -1,4 +1,4 @@
-package ng.adashi.utils
+package com.enike.domain.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
