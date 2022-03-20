@@ -65,7 +65,15 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     implementation 'com.airbnb.android:lottie-compose:5.0.1'
 
+   /* // Compose dependencies
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.17.0"
 
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
+*/
     //Compose accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.2-alpha"
     implementation "com.google.accompanist:accompanist-permissions:0.24.2-alpha"
