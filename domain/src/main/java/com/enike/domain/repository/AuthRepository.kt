@@ -4,6 +4,6 @@ import com.enike.domain.model.VerifyPhoneNumberResponse
 
 interface AuthRepository {
 
-    suspend fun verifyPhoneNumber(phoneNumber: String): Flow<Data>VerifyPhoneNumberResponse
+    suspend fun verifyPhoneNumber(phoneNumber: String): VerifyPhoneNumberResponse
 
 }
