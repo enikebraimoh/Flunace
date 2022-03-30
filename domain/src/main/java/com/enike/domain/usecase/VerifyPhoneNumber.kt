@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-
-class VerifyPhoneNumber(val authRepo: AuthRepository) {
+class VerifyPhoneNumber(private val authRepo: AuthRepository) {
     operator fun invoke(phoneNumber: String): Flow<DataState<VerifyPhoneNumberResponse>> =
         flow {
             try {
@@ -25,8 +24,7 @@ class VerifyPhoneNumber(val authRepo: AuthRepository) {
                         emit(DataState.GenericError(status, res))
                     }
                 }
-
             }
 
-        }
+     }
 }
