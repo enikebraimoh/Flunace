@@ -54,6 +54,7 @@ fun WhatsYourNameScreen(navigate: () -> Unit) {
             onTextChange = {
                 if (it.length <= 10) setFirstNameText(it)
             })
+
         Spacer(modifier = Modifier.height(10.dp))
         CustomInputField(
             text = lastName,
