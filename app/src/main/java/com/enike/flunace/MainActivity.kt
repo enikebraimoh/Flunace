@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.enike.flunace.FlunaceScreens.*
+import com.enike.flunace.ui.MainScreen
 import com.enike.flunace.ui.auth.addressyou.WhatsYourNameScreen
 import com.enike.flunace.ui.auth.createaccount.CreateAccountScreen
 import com.enike.flunace.ui.auth.verifyotp.VerifyOtpScreen
@@ -134,11 +136,19 @@ fun FlunaceNavHost(
         }
 
         composable(Home.name) {
-            Home()
+            MainScreen()
         }
 
     }
 
-
+}
+@Preview
+@Composable
+fun preview() {
+    FlunaceTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            App()
+        }
+    }
 }
 
