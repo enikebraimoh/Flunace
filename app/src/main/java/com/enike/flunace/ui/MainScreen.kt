@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+
     Scaffold(
         bottomBar = {
             BottomBar(navController = navController)
@@ -25,10 +26,10 @@ fun MainScreen() {
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
+        BottomBarScreen.Home,
         BottomBarScreen.Explore,
         BottomBarScreen.History,
-        BottomBarScreen.Cart,
-        BottomBarScreen.Home
+        BottomBarScreen.Cart
     )
 
     val backStackEntry by navController.currentBackStackEntryAsState()

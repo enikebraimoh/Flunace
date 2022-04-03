@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.enike.flunace.ui.components.ExploreScreen
+import com.enike.flunace.ui.components.Home
 
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
@@ -20,7 +21,7 @@ fun BottomNavGraph(navController: NavHostController) {
             ExploreScreen()
         }
         composable(BottomBarScreen.Home.route) {
-            ExploreScreen()
+            Home()
         }
 
     }
