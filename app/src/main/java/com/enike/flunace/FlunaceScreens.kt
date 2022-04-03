@@ -30,14 +30,3 @@ enum class FlunaceScreens() {
     }
 
 }
-
-enum class BottomBarScreen(route: String, title: String, icon: ImageVector) {
-    Cart("cart", "Cart", Icons.Default.Home),
-    Settings("home", "Home", Icons.Default.Settings),
-    History("history", "History", Icons.Default.Notifications),
-    Explore("explore", "Explore", Icons.Default.Person),
-    Vendors("vendors", "Vendors", Icons.Default.Share);
-
-
-
-}
